@@ -5,20 +5,23 @@ import (
 	"os"
 )
 
-type VPinScoreParser struct{}
+type VPinScoreParser struct {
+	NVRamDirectory string
+}
 
-func NewVPinScoreParser() *VPinScoreParser {
-	return &VPinScoreParser{}
+func NewVPinScoreParser(nvramDir string) *VPinScoreParser {
+	return &VPinScoreParser{NVRamDirectory: nvramDir}
 }
 
 func (vp *VPinScoreParser) ReadNVRamFile(filePath string) ([]byte, error) {
-	if _, err := os.Stat(filePath); err != nil {
-		return nil, fmt.Errorf("could not find filePath '%s': %s\n", filePath, err)
+	romPath := fmt.Sprintf("%s/%s", vp.NVRamDirectory, filePath)
+	if _, err := os.Stat(romPath); err != nil {
+		return nil, fmt.Errorf("could not find filePath '%s': %s\n", romPath, err)
 	}
 
-	bytes, err := os.ReadFile(filePath)
+	bytes, err := os.ReadFile(romPath)
 	if err != nil {
-		return nil, fmt.Errorf("could not read filePath '%s': %s\n", filePath, err)
+		return nil, fmt.Errorf("could not read filePath '%s': %s\n", romPath, err)
 	}
 	return bytes, nil
 }
