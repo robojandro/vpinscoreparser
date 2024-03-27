@@ -1,4 +1,4 @@
-module vpinscoreparser
+module github.com/robojandro/vpinscoreparser
 
 go 1.21.4
 
